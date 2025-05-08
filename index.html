@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Papus Ajedrez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--gradient-1);
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-links {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        :root {
+            --primary-color: #1a1a2e;
+            --accent-color: #ffd700;
+            --text-color: #333;
+            --bg-color: #f0f2f5;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --gradient-2: linear-gradient(45deg, var(--accent-color), #ff9f1c);
+        }
+
+        @keyframes chessPattern {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            background: var(--gradient-1);
+            min-height: 100vh;
+            color: var(--text-color);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+                          linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+                          linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%),
+                          linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
+            background-size: 50px 50px;
+            animation: chessPattern 20s linear infinite;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: var(--gradient-2);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 4.5em;
+            margin: 20px 0 60px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        h1 span {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.8em;
+            margin: 60px 0 40px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: var(--gradient-2);
+            border-radius: 2px;
+        }
+
+        .content-section {
+            background: var(--white);
+            padding: 35px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-section::before {
+            content: '♟';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 100px;
+            opacity: 0.03;
+            transform: rotate(45deg);
+        }
+
+        .content-section:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px -5px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
+            position: relative;
+        }
+
+        p {
+            font-size: 1.15em;
+            line-height: 1.9;
+            color: var(--text-color);
+            margin-bottom: 1.4em;
+            text-align: justify;
+        }
+
+        .funny-note {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,159,28,0.1) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            position: relative;
+            border-left: 4px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .funny-note:hover {
+            transform: translateX(10px);
+            background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,159,28,0.15) 100%);
+        }
+
+        .funny-note::before {
+            content: '♔';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            opacity: 0.2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 3em;
+            }
+
+            .section-title {
+                font-size: 2.2em;
+            }
+
+            .content-section {
+                padding: 25px;
+            }
+
+            .funny-note {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+    <style>
+        .video-container {
+            position: relative;
+            padding-bottom: 40%;
+            height: 0;
+            overflow: hidden;
+            margin: 15px auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        .cat-meme {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .cat-meme:hover {
+            transform: scale(1.1);
+        }
+
+        .cat-meme-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 15px;
+        }
+
+        .cat-meme-caption {
+            font-style: italic;
+            color: var(--primary-color);
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-links">
+            <a href="#historias">Historias de Los Papus</a>
+            <a href="#reglas">Reglas del Juego</a>
+            <a href="#jugadas">Jugadas Especiales</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Los Papus <span>Ajedrez</span></h1>
+
+        <h2 id="historias" class="section-title">Historias de Los Papus</h2>
+
+        <div class="content-section">
+            <h2>Osiel: Los Errores te Hacen más Fuerte</h2>
+            <p>En una memorable partida contra Toño, Cristian Nopal y Alex, nuestro querido Osiel demostró que hasta los errores más graciosos pueden convertirse en lecciones de vida. Mientras sus amigos se reían de sus movimientos "únicos" y le gritaban "¡Esa jugada es ilegal!", él mantuvo su filosofía: "Los errores te hacen más fuerte" (aunque algunos errores te hacen más el payaso del grupo).</p>
+            <div class="funny-note">Dicen que después de esa partida, Osiel comenzó a estudiar ajedrez... ¡o al menos aprendió a mover las piezas en la dirección correcta!</div>
+            <div class="cat-meme-container">
+                <img class="cat-meme" src="https://media.discordapp.net/attachments/1323024182077820980/1370094186195324988/image.png?ex=681e3f25&is=681ceda5&hm=ff677ac3c3475854fd6f88e15aea154b18661c2e2359af26a2392244512b974c&=&format=webp&quality=lossless&width=476&height=555" alt="Osiel aprendiendo ajedrez"/>
+                <p class="cat-meme-caption">"¿Así no se mueve el caballo?"</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Alex: La Legendaria Torre Bloqueadora</h2>
+            <p>Cuenta la leyenda que en una partida crucial, Alex tuvo la victoria al alcance de su mano con su poderosa reina lista para dar el golpe final. Sin embargo, en un giro inesperado digno de una telenovela de ajedrez, decidió mover una torre que, irónicamente, bloqueó el camino de su propia reina.</p>
+            <div class="funny-note">Desde entonces, Alex desarrolló un sexto sentido para detectar torres bloqueadoras... ¡aunque a veces ese sentido sigue de vacaciones!</div>
+            <div class="cat-meme-container">
+                <img class="cat-meme" src="https://media.discordapp.net/attachments/1323024182077820980/1370094044004221058/image.png?ex=681e3f03&is=681ced83&hm=76fba15eabf5d5a8b2ebe292c0ae2c1a252234a763bca20f8e373232326f4c9d&=&format=webp&quality=lossless&width=392&height=402" alt="Alex y su torre bloqueadora"/>
+                <p class="cat-meme-caption">"¡Mi torre! ¿Qué he hecho?"</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Toño 👑: El Maestro pendejo (alexand no estuvo aqui)</h2>
+            <p>Entre todos Los Papus, Toño se ha ganado el respeto como el jugador más consistente y formidable del grupo. Partida tras partida, demuestra su dominio del tablero con una habilidad que pocos pueden igualar. Incluso cuando Osiel ocasionalmente logra una victoria, Toño mantiene su compostura y regularmente recupera su corona en el siguiente encuentro.</p>
+            <div class="funny-note">Dicen que cuando Toño se sienta frente al tablero, hasta las piezas se ponen nerviosas... ¡saben que están en presencia de la realeza del ajedrez!</div>
+            <div class="cat-meme-container">
+                <img class="cat-meme" src="https://media.discordapp.net/attachments/1323024182077820980/1370094483470811237/silly-cat-memes-for-you-v0-6l9ihdcn423d1.webp?ex=681e3f6b&is=681cedeb&hm=aeeb804c389825bd840115d5157b8f9ee20373ca1a4acbf56b733a38c05d83c7&=&format=webp&width=720&height=541" alt="Toño el maestro del ajedrez"/>
+                <p class="cat-meme-caption">"El Rey del Tablero 👑"</p>
+            </div>
+        </div>
+
+        <h2 id="reglas" class="section-title">Reglas del Juego(principiantes)</h2>
+
+        <div class="content-section">
+            <h2>El Rey: El Jefe que Camina Despacito</h2>
+            <p>El Rey es como ese jefe que quiere hacer de todo pero solo puede moverse un cuadrito a la vez en cualquier dirección. ¡Protéjanlo a toda costa! Si lo capturan, es game over. Y ojo con el Jaque Mate, que es cuando el Rey está bajo ataque y no tiene escapatoria.</p>
+            <div class="funny-note">¿Por qué el Rey solo se mueve un espacio? Porque lleva la corona y no quiere que se le caiga... ¡O eso dicen!</div>
+        </div>
+
+        <div class="content-section">
+            <h2>La Reina: La Todoterreno del Tablero</h2>
+            <p>La Reina es la pieza más poderosa, puede moverse en cualquier dirección y las casillas que quiera. Diagonal, horizontal, vertical... ¡es como tener un tanque en el tablero! Pero cuidado, perderla es como quedarte sin tu mejor jugador en medio del partido.</p>
+            <div class="funny-note">La Reina es tan poderosa que dicen que cuando se mueve, las otras piezas le hacen la ola... ¡Menos las del oponente, claro!</div>
+        </div>
+
+        <div class="content-section">
+            <h2>La Torre: La Rectitud Hecha Pieza</h2>
+            <p>Las Torres son como trenes: solo pueden moverse en línea recta, horizontal o vertical, pero pueden atravesar todo el tablero de un tirón. Son excelentes para acorralar al Rey enemigo, especialmente en los finales de partida.</p>
+            <div class="funny-note">¿Por qué las Torres solo se mueven en línea recta? Porque en diagonal se marean... ¡Y nadie quiere una Torre mareada!</div>
+        </div>
+
+        <div class="content-section">
+            <h2>El Alfil: El Experto en Diagonales</h2>
+            <p>Los Alfiles son los maestros de la diagonal. Se mueven como si estuvieran en una pista de baile, siempre en diagonal y manteniendo su color original. Un Alfil que empieza en casilla negra, siempre estará en casillas negras.</p>
+            <div class="funny-note">Los Alfiles tienen prohibido caminar en línea recta. Dicen que es porque una vez uno intentó y se tropezó con un peón...</div>
+        </div>
+
+        <div class="content-section">
+            <h2>El Caballo: El Saltarín Impredecible</h2>
+            <p>El Caballo es la única pieza que puede saltar sobre otras. Se mueve en forma de "L": dos casillas en una dirección y luego una en perpendicular. Es como un ninja del ajedrez, ¡aparece donde menos te lo esperas!</p>
+            <div class="funny-note">El movimiento en "L" del Caballo fue inspirado por un caballo que no sabía bailar en línea recta... ¡Y decidió hacer su propio paso de baile!</div>
+        </div>
+
+        <div class="content-section">
+            <h2>El Peón: El Pequeño Guerrero</h2>
+            <p>Los Peones son los soldados del frente. Avanzan una casilla hacia adelante (o dos en su primer movimiento), pero capturan en diagonal. Si un peón llega al otro lado del tablero, ¡se convierte en cualquier pieza que quieras (excepto el Rey)! Es como un Pokemon evolucionando.</p>
+            <div class="funny-note">Los Peones son los únicos que no pueden retroceder. No porque no quieran, sino porque olvidaron traer el botón de reversa...</div>
+        </div>
+
+        <h2 id="jugadas" class="section-title">Jugadas Especiales</h2>
+
+        <div class="content-section">
+            <h2>El Enroque: El Movimiento Secreto del Rey</h2>
+            <p>El enroque es un movimiento especial que involucra al Rey y a una Torre. Es la única vez que puedes mover dos piezas en un solo turno. El Rey se mueve dos casillas hacia la Torre, y la Torre "salta" sobre el Rey al otro lado. ¡Es como un baile coordinado entre el Rey y la Torre!</p>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/FcLYgXCkucc" title="Cómo hacer Enroque en Ajedrez" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="funny-note">¿Por qué inventaron el enroque? Porque el Rey estaba cansado de moverse de a una casilla y quería hacer algo más emocionante... ¡con estilo!</div>
+        </div>
+
+        <div class="content-section">
+            <h2>Captura al Paso: El Movimiento Ninja</h2>
+            <p>La captura al paso (en passant) es una jugada especial que ocurre cuando un peón avanza dos casillas y pasa por al lado de un peón enemigo. El peón enemigo puede capturarlo como si solo hubiera avanzado una casilla. ¡Es como un movimiento de artes marciales en el ajedrez!</p>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/RB2U5F8-J-8" title="La Captura al Paso en Ajedrez" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="funny-note">La captura al paso es tan misteriosa que incluso algunos jugadores experimentados se rascan la cabeza cuando la ven... ¡como un truco de magia en el tablero!</div>
+        </div>
+
+        <div class="content-section">
+            <h2>Promoción del Peón: La Gran Transformación</h2>
+            <p>Cuando un peón llega al otro lado del tablero, puede promocionar y convertirse en cualquier pieza (excepto el Rey). La mayoría elige la Reina, ¡pero a veces promocionar a un Caballo puede ser la jugada ganadora! Es el sueño de todo peón: llegar a ser alguien importante.</p>
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/BCctqDjSE2I" title="Promoción del Peón en Ajedrez" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="funny-note">Los peones tienen un grupo de apoyo llamado "Peones Anónimos" donde comparten sus sueños de convertirse en Reina... ¡aunque algunos prefieren ser Caballos para poder saltar!</div>
+        </div>
+
+        <div class="content-section" style="background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,159,28,0.15) 100%);">
+            <h2 class="section-title" style="margin-top: 0;">¡PRÓXIMAMENTE! 🎉</h2>
+            <div style="text-align: center; padding: 20px;">
+                <h2 style="font-size: 2.5em; color: var(--accent-color); text-shadow: 2px 2px 4px rgba(0,0,0,0.2); animation: float 4s ease-in-out infinite;">Temporadas 9, 10 y 11</h2>
+                <h3 style="font-size: 2em; margin: 20px 0;">Cómo No Jugar Ajedrez</h3>
+                <p style="font-size: 1.2em; margin: 20px 0;">¡Prepárate para más aventuras, risas y jugadas legendarias con Los Papus!</p>
+                <div style="margin: 40px 0; font-size: 1.5em; font-weight: bold; color: var(--primary-color);">COMING SOON</div>
+                <div class="cat-meme-container" style="background: none;">
+                    <img class="cat-meme" src="https://media.discordapp.net/attachments/1323024182077820980/1370095528242843843/Fast_Cat_Cat_Excited_Sticker_-_Fast_Cat_Cat_Excited_Jumping_-_Descubre_y_comparte_GIF.gif?ex=681e4065&is=681ceee5&hm=a55fa5d6836febea166355356e2317c4a0c7989c960478dae35c4e2df499d8e2&=&width=560&height=547" alt="Gato emocionado por las nuevas temporadas" style="width: 250px; height: 250px;"/>
+                    <p class="cat-meme-caption">"¡No puedo esperar para ver más jugadas épicas!"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
